@@ -77,7 +77,7 @@ catch (Exception $e) {
 	<h1>FormData: Select options</h1>
 	<hr />
 	<?php if ($form_report) echo $form_report; ?>
-	<form action="#" method="post">
+	<form>
 		<?= $FormData->returnHtml() ?>
 	</form>
 </div>
