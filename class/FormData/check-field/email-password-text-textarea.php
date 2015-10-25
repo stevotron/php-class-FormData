@@ -29,7 +29,7 @@ else
 		// replace any white space groups with a single space
 		$input = preg_replace("|\s+|"," ",$input);
 		
-		$this->field[$name]['value_clean'] = $input;
+		$this->field[$name]['valueclean'] = $input;
 		
 		$nl_count = 0;
 	}
@@ -50,7 +50,7 @@ else
 		$input = preg_replace("/[\v\f\t ]+/", " ", $input);// any white space group, that does not include a line break, is reduced to a single space
 		$input = preg_replace("/(\n){".$max_nl.",}/", $nl_string, $input);// limit consecutive new lines to specified amount
 		
-		$this->field[$name]['value_clean'] = $input;
+		$this->field[$name]['valueclean'] = $input;
 		
 		$nl_count = substr_count($input, "\n");
 	}

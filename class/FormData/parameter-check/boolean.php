@@ -17,5 +17,5 @@ else if (in_array($check, $false, true))
 }
 else
 {
-	throw new Exception('Invalid value ('.$check.') for for field name ('.$this->setting_field_name.'), parameter ('.$parameter.') - must be boolean');
+	throw new Exception('Invalid value ('.$check.') for field name ('.$this->setting_field_name.'), parameter ('.$parameter.') - must be boolean');
 }

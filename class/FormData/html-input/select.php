@@ -16,16 +16,16 @@ if ($p['required'] == '1')
 $h1[] = '>';
 
 foreach ($p['option'] as $a) {
-	$k = $a[0];
-	$v = $a[1];
-	
-	if ($k == '_disabled')
+	$id   = $a[0];
+	$desc = $a[1];
+
+	if ($id == '_disabled')
 	{
-		$opt[] = '<option disabled="disabled">'.htmlspecialchars($v).'</option>';
+		$opt[] = '<option disabled="disabled">'.htmlspecialchars($desc).'</option>';
 	}
 	else
 	{
-		if ($p['value'] != '' && $p['value'] == $k)
+		if ($p['value'] != '' && $p['value'] == $id)
 		{
 			$selected = ' selected="selected"';
 			$optionSelected = true;
@@ -34,7 +34,7 @@ foreach ($p['option'] as $a) {
 		{
 			$selected = '';
 		}
-		$opt[] = '<option value="'.htmlspecialchars($k).'"'.$selected.'>'.htmlspecialchars($v).'</option>';
+		$opt[] = '<option value="'.htmlspecialchars($id).'"'.$selected.'>'.htmlspecialchars($desc).'</option>';
 	}
 }
 if (!$optionSelected) {

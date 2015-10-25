@@ -36,7 +36,11 @@ class FormData
 				case 'required':
 					$file = 'boolean';
 					break;
-								
+
+				case 'option':
+					$file = 'option';
+					break;
+
 				case 'checkboxvalue':
 				case 'checkboxvaluealt':
 				case 'decimal':
@@ -47,7 +51,6 @@ class FormData
 				case 'maxnl':
 				case 'min':
 				case 'minlength':
-				case 'option':
 				case 'placeholder':
 				case 'requiredmessage':
 				case 'rows':
@@ -170,7 +173,6 @@ class FormData
 		}
 
 		return true;
-
 	}
 	
 	
@@ -327,7 +329,7 @@ class FormData
 			$this->checkField($name, $_POST[$name]);
 		}
 		
-		return $this->hasError();
+		return $this->hasError() ? false : true;
 	}
 	
 	
@@ -337,7 +339,7 @@ class FormData
 			$this->checkField($name, $_GET[$name]);
 		}
 		
-		return $this->hasError();
+		return $this->hasError() ? false : true;
 	}
 	
 	
