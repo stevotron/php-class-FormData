@@ -70,6 +70,7 @@ $this->field_data = [
 		'id'              => false,
 		'multiple'        => false,
 		'option'          => false,
+		'placeholder'     => false,
 		'required'        => false,
 		'requiredmessage' => false,
 		'value'           => false,

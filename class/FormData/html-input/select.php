@@ -38,7 +38,8 @@ foreach ($p['option'] as $a) {
 	}
 }
 if (!$optionSelected) {
-	$h2[] = '<option selected="selected" value="">Please choose...</option>';
+	$placeholder = $p['placeholder'] ? htmlspecialchars($p['placeholder']) : 'Please choose...';
+	$h2[] = '<option selected="selected" value="">'.$placeholder.'</option>';
 	$h2[] = '<option disabled="disabled"></option>';
 }
 $h2[] = implode('', $opt);

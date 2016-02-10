@@ -76,7 +76,7 @@ catch (Exception $e) {
 <div class="container">
 	<h1>FormData: Select options</h1>
 	<hr />
-	<?php if ($form_report) echo $form_report; ?>
+<?php if ($form_report) echo $form_report; ?>
 	<form>
 		<?= $FormData->returnHtml() ?>
 	</form>
