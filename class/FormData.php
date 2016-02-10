@@ -379,18 +379,40 @@ class FormData
 	
 	
 	// ERROR MANAGEMENT
-	
-	
-	private function setError($name, $message)
+
+
+	public function setError($name, $message = true, $prepend_message = true)
 	{
-		$this->field[$name]['has_error'] = true;
-		
-		if ($message == 'is required' && $this->field[$name]['requiredmessage']) {
-			$this->error[$name] = $this->field[$name]['requiredmessage'];
+		if ($name === NULL) {
+			// add a message not linked to a specific field
+			if (!is_string($message)) {
+				throw new Exception ('Message must be a string when file name is NULL');
+			}
+			$this->error[] = $message;
+		}
+		else if (!isset($this->field[$name])) {
+			throw new Exception ('Cannot set error for field ('.$name.'), does not exist');
+		}
+		else if ($message === true) {
+			$this->field[$name]['has_error'] = true;
+		}
+		else if (!is_string($message)) {
+			throw new Exception ('Message must be boolean true or a string');
 		}
 		else {
-			$this->error[$name] = $this->field[$name]['label'].' '.$message;
+			$this->field[$name]['has_error'] = true;
+
+			if ($message == 'is required' && $this->field[$name]['requiredmessage']) {
+				$this->error[$name] = $this->field[$name]['requiredmessage'];
+			} else if ($prepend_message) {
+				$this->error[$name] = $this->field[$name]['label'] . ' ' . $message;
+			}
+			else {
+				$this->error[$name] = $message;
+			}
 		}
+
+		return true;
 	}
 	
 	
