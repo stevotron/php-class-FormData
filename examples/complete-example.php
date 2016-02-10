@@ -72,7 +72,19 @@ try {
 		}
 
 
-		if (!$FormData->hasError()) {
+		if ($FormData->hasError()) {
+			// there was some errors - handle them here
+
+			// an object listing all error fields with user friendly messages can be obtained as follows
+			$error_obj = $FormData->getErrorList();
+
+			// an HTML ready string of errors (separated with '<br />') can be obtained as follows
+			$error_message = $FormData->getErrorList(true);
+
+			// just as an example, prepare the data for a confirmation message
+			$form_report  = '<div class="alert alert-danger" role="alert"><h4>Form report: Errors!</h4><p>'.$error_message.'</p></div>';
+		}
+		else {
 			// there were no errors so the information can be processed
 
 			// example of extracting data from the object
@@ -84,18 +96,6 @@ try {
 			// just as an example, prepare the data for a confirmation message
 			$form_report  = '<div class="alert alert-success" role="alert"><h4>Form report: Success!</h4><p>First name: '.htmlspecialchars($data['first-name']).'<br />Surname: ';
 			$form_report .= htmlspecialchars($data['surname']).'<br />Colour ID: '.htmlspecialchars($data['colour']).'<br />OK?: '.htmlspecialchars($data['ok']).'</p></div>';
-		}
-		else {
-			// there was some errors - handle them here
-
-			// an object listing all error fields with user friendly messages can be obtained as follows
-			$error_obj = $FormData->getErrorList();
-
-			// an HTML ready string of errors (separated with '<br />') can be obtained as follows
-			$error_message = $FormData->getErrorList(true);
-
-			// just as an example, prepare the data for a confirmation message
-			$form_report  = '<div class="alert alert-danger" role="alert"><h4>Form report: Errors!</h4><p>'.$error_message.'</p></div>';
 		}
 	}
 }
