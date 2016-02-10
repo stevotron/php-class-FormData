@@ -18,7 +18,7 @@ $ignore = array();
 
 if ($this->field[$name]['type'] == 'select')
 {
-	// possible inputs that will match an array but will not be valid (used for formating dropdown)
+	// possible inputs that will match an array but will not be valid (used for formatting dropdown)
 	$ignore = array('', '_disabled');// select only
 }
 

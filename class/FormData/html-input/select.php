@@ -19,19 +19,15 @@ foreach ($p['option'] as $a) {
 	$id   = $a[0];
 	$desc = $a[1];
 
-	if ($id == '_disabled')
-	{
+	if ($id === '_disabled') {
 		$opt[] = '<option disabled="disabled">'.htmlspecialchars($desc).'</option>';
 	}
-	else
-	{
-		if ($p['value'] != '' && $p['value'] == $id)
-		{
+	else {
+		if ($p['value'] != '' && $p['value'] == $id) {
 			$selected = ' selected="selected"';
 			$optionSelected = true;
 		}
-		else
-		{
+		else {
 			$selected = '';
 		}
 		$opt[] = '<option value="'.htmlspecialchars($id).'"'.$selected.'>'.htmlspecialchars($desc).'</option>';

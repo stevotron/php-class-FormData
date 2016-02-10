@@ -33,7 +33,7 @@ try {
 		[
 			'type'     => 'select',
 			'label'    => 'Options declared as an array, gives more possibilities with layout',
-			'id'       => 'colour',
+			'id'       => 'arrays',
 			'required' => '1',
 			'option'   => [
 				// ... or as a sub array with two elements
