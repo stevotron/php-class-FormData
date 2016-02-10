@@ -49,9 +49,31 @@ try {
 
 	// check for form submission
 	if ($_POST['submit'] == 'submit') {
-		// search POST array for all fields that were set above and validate
-		if ($FormData->checkPost()) {
-			// if true, there were no errors so the information can be processed
+
+		// search POST array for all fields that were set above and check submitted data
+		$FormData->checkPost();
+
+
+		// add a generic error that is not linked to any fields
+		$FormData->setError(NULL, 'A generic error message');
+
+		// perform further, custom checks on submitted data
+		if (!$FormData->hasError('first-name')) {
+			$submitted = $FormData->getField('first-name', 'value_clean');
+			if (strtolower($submitted) == 'paul') {
+				$FormData->setError('first-name', 'Sorry, no-one called Paul is allowed', false);
+			}
+		}
+
+		// assign an error to a field without generating a message - for example...
+		if ($FormData->getField('colour', 'value_clean') == '2' && $FormData->getField('ok', 'value_clean') == 'no') {
+			$FormData->setError('colour');// ... this field will be highlighted as having an error but no message will be logged, the next line will create the message for both fields
+			$FormData->setError('ok', 'If your favourite colour is yellow then you must be OK', false);
+		}
+
+
+		if (!$FormData->hasError()) {
+			// there were no errors so the information can be processed
 
 			// example of extracting data from the object
 			$data['first-name'] = $FormData->getField('first-name', 'value_clean');
@@ -64,7 +86,7 @@ try {
 			$form_report .= htmlspecialchars($data['surname']).'<br />Colour ID: '.htmlspecialchars($data['colour']).'<br />OK?: '.htmlspecialchars($data['ok']).'</p></div>';
 		}
 		else {
-			// if false, there was some errors - handle them here
+			// there was some errors - handle them here
 
 			// an object listing all error fields with user friendly messages can be obtained as follows
 			$error_obj = $FormData->getErrorList();

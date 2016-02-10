@@ -5,7 +5,8 @@ class FormData
 	private $setting_field      = [];
 	private $setting_field_name = '';
 	private $setting_field_type = '';
-	private $error              = [];
+	private $field_error        = [];
+	private $generic_error      = [];
 	private $field              = [];
 	private $field_data         = [];
 	
@@ -148,11 +149,11 @@ class FormData
 	public function setField($field_details_array)
 	{
 		$this->setSettingField($field_details_array);
-		
+
 		// check the field name is valid (id will be used if name is not set)
 		$this->setFieldParameterName();
 		unset($this->setting_field['name']);
-		
+
 		// check the field type is valid
 		$this->setFieldParameterType();
 		$this->field[$this->setting_field_name]['type'] = $this->setting_field_type;
@@ -384,69 +385,114 @@ class FormData
 	public function setError($name, $message = true, $prepend_message = true)
 	{
 		if ($name === NULL) {
-			// add a message not linked to a specific field
+			// add an error not linked to a specific field
 			if (!is_string($message)) {
+
 				throw new Exception ('Message must be a string when file name is NULL');
 			}
-			$this->error[] = $message;
+			$this->generic_error[] = $message;
 		}
 		else if (!isset($this->field[$name])) {
+
 			throw new Exception ('Cannot set error for field ('.$name.'), does not exist');
 		}
 		else if ($message === true) {
+
+			// mark a field as having an error but do not record a message
 			$this->field[$name]['has_error'] = true;
 		}
 		else if (!is_string($message)) {
+
 			throw new Exception ('Message must be boolean true or a string');
 		}
 		else {
+
 			$this->field[$name]['has_error'] = true;
 
 			if ($message == 'is required' && $this->field[$name]['requiredmessage']) {
-				$this->error[$name] = $this->field[$name]['requiredmessage'];
-			} else if ($prepend_message) {
-				$this->error[$name] = $this->field[$name]['label'] . ' ' . $message;
+
+				$this->field_error[$name] = $this->field[$name]['requiredmessage'];
+			}
+			else if ($prepend_message) {
+
+				$this->field_error[$name] = $this->field[$name]['label'] . ' ' . $message;
 			}
 			else {
-				$this->error[$name] = $message;
+
+				$this->field_error[$name] = $message;
 			}
 		}
 
 		return true;
 	}
-	
-	
+
+
 	public function hasError($name = NULL)
 	{
 		if ($name === NULL) {
-			return (count($this->error) > 0) ? true : false;
-		}
-		
-		if (isset($this->error[$name])) {
-			return $this->error[$name];
-		}
-		
-		if (isset($this->field[$name])) {
-			return false;
-		}
-		
-		throw new Exception (__METHOD__.' - Cannot check field ('.$name.'), does not exist');
-	}
-	
-	
-	public function getErrorList($html_ready = false)
-	{
-		if (count($this->error) > 0) {
-			if (!$html_ready) {
-				return (object) $this->error;
+
+			$found_error = false;
+			foreach ($this->field as $data) {
+				if ($data['has_error']) {
+					$found_error = true;
+					break;
+				}
 			}
 
-			foreach ($this->error as $v) {
+			if (count($this->field_error) > 0 || count($this->generic_error) > 0 || $found_error) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+
+		if (!isset($this->field[$name])) {
+			throw new Exception (__METHOD__.' - Cannot check field ('.$name.'), does not exist');
+		}
+
+		if ($this->field_error[$name] !== NULL) {
+			return $this->field_error[$name];
+		}
+
+		if ($this->field[$name]['has_error']) {
+			return true;
+		}
+
+		return false;
+	}
+
+
+	public function getErrorList($html_ready = false)
+	{
+		if ($this->hasError()) {
+
+			$error_array = [];
+
+			// extract errors this way to ensure error list order matches field order - errors can be custom added after automatic check
+			foreach ($this->field as $name => $data) {
+				if (isset($this->field_error[$name])) {
+					$error_array[] = $this->field_error[$name];
+				}
+			}
+
+			// add any generic errors
+			$error_array = array_merge($error_array, $this->generic_error);
+
+			if (count($error_array) == 0) {
+				$error_array[] = 'Errors have been found but no messages have been generated';
+			}
+
+			if (!$html_ready) {
+				return (object) $error_array;
+			}
+
+			foreach ($error_array as $v) {
 				$a[] = htmlspecialchars($v);
 			}
 			return implode('<br />',$a);
 		}
-		
+
 		return false;
 	}
 }
