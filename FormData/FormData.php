@@ -19,7 +19,7 @@ class FormData
 	
 	private function setFieldData()
 	{
-		require __DIR__.'/FormData/field-data.php';
+		require __DIR__.'/class-files/field-data.php';
 	}
 	
 	
@@ -67,7 +67,7 @@ class FormData
 			
 			if ($file) {
 				// file will use the variable $parameter to check
-				require __DIR__.'/FormData/parameter-check/'.$file.'.php';
+				require __DIR__.'/class-files/parameter-check/'.$file.'.php';
 				// file will update $this->setting_field[$parameter] if needed
 			}
 			
@@ -211,7 +211,7 @@ class FormData
 				$p = $this->field[$name];
 				$p['name'] = $name;
 				
-				require __DIR__.'/FormData/html-input/'.$file.'.php';
+				require __DIR__.'/class-files/html-input/'.$file.'.php';
 			}
 			else {
 				$html[] = '<strong style="color:red">Cannot process field type ('.htmlspecialchars($this->field[$name]['type']).')</strong>';
@@ -373,7 +373,7 @@ class FormData
 				throw new Exception(__METHOD__.' - Unexpected field type ('.$this->field[$name]['type'].') in check');
 		}
 		
-		require __DIR__.'/FormData/check-field/'.$file.'.php';
+		require __DIR__.'/class-files/check-field/'.$file.'.php';
 		
 		return $this->hasError($name);
 	}

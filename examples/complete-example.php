@@ -4,7 +4,7 @@
 error_reporting(E_ALL & ~E_NOTICE);
 
 // include the class file
-include __DIR__.'/../class/FormData.php';
+include __DIR__.'/../FormData/FormData.php';
 $FormData  = new FormData();
 
 try {
