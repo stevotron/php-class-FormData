@@ -69,7 +69,7 @@ if ($_POST['submit'] == 'submit') {
 	}
 	else {
 		$first_name = $FormData->getClean('first-name');
-		number      = $FormData->getClean('number');
+		$number     = $FormData->getClean('number');
 		$colour_id  = $FormData->getClean('colour');
 		$ok         = $FormData->getClean('ok');
 	}
