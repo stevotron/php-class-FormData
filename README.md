@@ -39,7 +39,7 @@ $FormData->setFields([
 			'3' => 'Blue',
 		]
 	]
-];	
+]);	
 ```
 
 ### Output an HTML form (bootstrap required)
