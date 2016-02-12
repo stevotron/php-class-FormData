@@ -12,32 +12,31 @@ More examples and docs in the [Wiki](https://github.com/prcd/php-class-FormData/
 
 ```php
 $FormData->setFields([
-    [
-			'type'             => 'text',
-			'label'            => 'First name',
-			'id'               => 'first-name',
-			'required'         => '1',
-			'max_length'       => '50',
-		],
-		[
-			'type'     => 'number',
-			'label'    => 'Age',
-			'id'       => 'age',
-			'required' => '1',
-			'min'      => '1',
-			'max'      => '100',
-			'step'     => '1',
-		],
-		[
-			'type'     => 'select',
-			'label'    => 'Favourite colour',
-			'id'       => 'colour',
-			'required' => '1',
-			'option'   => [
-				'1' => 'Red',
-				'2' => 'Yellow',
-				'3' => 'Blue',
-			]
+	[
+		'type'       => 'text',
+		'label'      => 'First name',
+		'id'         => 'first-name',
+		'required'   => '1',
+		'max_length' => '50',
+	],
+	[
+		'type'     => 'number',
+		'label'    => 'Age',
+		'id'       => 'age',
+		'required' => '1',
+		'min'      => '1',
+		'max'      => '100',
+		'step'     => '1',
+	],
+	[
+		'type'     => 'select',
+		'label'    => 'Favourite colour',
+		'id'       => 'colour',
+		'required' => '1',
+		'option'   => [
+			'1' => 'Red',
+			'2' => 'Yellow',
+			'3' => 'Blue',
 		]
 	]
 ];	
@@ -58,12 +57,12 @@ $FormData->setFields([
 if ($_POST['submit'] == 'submit') {
 	$FormData->checkPost();
 	if ($FormData->hasError()) {
-	  $html_encoded_error_message = $FormData->getErrorList(true);
+		$html_encoded_error_message = $FormData->getErrorList(true);
 	}
 	else {
-	  $first_name = $FormData->getClean('first-name');
-	  $age        = $FormData->getClean('age');
-	  $colour_id  = $FormData->getClean('colour');
+		$first_name = $FormData->getClean('first-name');
+		$age        = $FormData->getClean('age');
+		$colour_id  = $FormData->getClean('colour');
 	}
 }
 ```
