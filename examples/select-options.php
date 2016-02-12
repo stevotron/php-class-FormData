@@ -32,22 +32,18 @@ try {
 		],
 		[
 			'type'     => 'select',
-			'label'    => 'Options declared as an array, gives more possibilities with layout',
+			'label'    => 'Options declared as sub arrays',
 			'id'       => 'arrays',
 			'required' => '1',
+			// ... or as a sub array with two elements
 			'option'   => [
-				// ... or as a sub array with two elements
 				['1', 'Blue'],
 				['2', 'Red'],
-				// if using the sub array method, a disabled option can be added using the special key name '_disabled'...
-				['_disabled', 'Can\'t pick me'],
-				// some more colours....
+				['_disabled', 'Brown'],// a disabled option can be added using the special key name '_disabled'...
 				['3', 'Green'],
 				['4', 'Orange'],
-				// '_disabled' is also useful for spacing options...
-				['_disabled', ''],
-				// and then some more options...
-				['10', 'Rain'],
+				['_disabled', ''],// '_disabled' is also useful for spacing options...
+				['10', 'Earth'],
 				['11', 'Wind'],
 				['12', 'Fire'],
 			],

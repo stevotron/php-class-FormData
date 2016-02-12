@@ -13,20 +13,21 @@ More examples and docs in the [Wiki](https://github.com/prcd/php-class-FormData/
 ```php
 $FormData->setFields([
 	[
-		'type'       => 'text',
-		'label'      => 'First name',
-		'id'         => 'first-name',
-		'required'   => '1',
-		'max_length' => '50',
+		'type'             => 'text',
+		'label'            => 'First name',
+		'id'               => 'first-name',
+		'required'         => '1',
+		'required_message' => 'We\'d love to know your first name!',
+		'max_length'       => '50',
 	],
 	[
 		'type'     => 'number',
-		'label'    => 'Age',
-		'id'       => 'age',
+		'label'    => 'Favourite multiple of 5',
+		'id'       => 'number',
 		'required' => '1',
-		'min'      => '1',
+		'min'      => '0',
 		'max'      => '100',
-		'step'     => '1',
+		'step'     => '5',
 	],
 	[
 		'type'     => 'select',
@@ -37,9 +38,16 @@ $FormData->setFields([
 			'1' => 'Red',
 			'2' => 'Yellow',
 			'3' => 'Blue',
-		]
-	]
-]);	
+		],
+	],
+	[
+		'type'               => 'checkbox',
+		'label'              => 'Are you OK?',
+		'id'                 => 'ok',
+		'checkbox_value'     => 'yes',
+		'checkbox_value_alt' => 'no',
+	],
+]);
 ```
 
 ### Output an HTML form (bootstrap required)
@@ -51,7 +59,7 @@ $FormData->setFields([
 </form>
 ```
 
-### Check submitted data
+### Check submitted data and get cleaned values
 
 ```php
 if ($_POST['submit'] == 'submit') {
@@ -61,8 +69,9 @@ if ($_POST['submit'] == 'submit') {
 	}
 	else {
 		$first_name = $FormData->getClean('first-name');
-		$age        = $FormData->getClean('age');
+		number      = $FormData->getClean('number');
 		$colour_id  = $FormData->getClean('colour');
+		$ok         = $FormData->getClean('ok');
 	}
 }
 ```

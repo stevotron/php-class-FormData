@@ -11,21 +11,22 @@ try {
 	// create the form fields and set parameters
 	$FormData->setFields([
 		[
-			// name is a required parameter, if omitted 'id' will be used
-			// this field's name will be set as 'first-name'
 			'type'             => 'text',
 			'label'            => 'First name',
+			'name'             => 'first-name', // 'name' is required for each field, if it is omitted 'id' is used if present
 			'id'               => 'first-name',
 			'required'         => '1',
 			'required_message' => 'We\'d love to know your first name!',
 			'max_length'       => '50',
 		],
 		[
-			'type'       => 'text',
-			'label'      => 'Surname',
-			'id'         => 'surname',
-			'required'   => '1',
-			'max_length' => '50',
+			'type'     => 'number',
+			'label'    => 'Favourite multiple of 5',
+			'id'       => 'number',
+			'required' => '1',
+			'min'      => '0',
+			'max'      => '100',
+			'step'     => '5',
 		],
 		[
 			'type'     => 'select',
@@ -53,32 +54,13 @@ try {
 		// search POST array for all fields that were set above and check submitted data
 		$FormData->checkPost();
 
-
-		// add a generic error that is not linked to any fields
-		$FormData->setError(NULL, 'A generic error message');
-
-		// perform further, custom checks on submitted data
-		if (!$FormData->hasError('first-name')) {
-			$submitted = $FormData->getField('first-name', 'value_clean');
-			if (strtolower($submitted) == 'paul') {
-				$FormData->setError('first-name', 'Sorry, no-one called Paul is allowed', false);
-			}
-		}
-
-		// assign an error to a field without generating a message - for example...
-		if ($FormData->getField('colour', 'value_clean') == '2' && $FormData->getField('ok', 'value_clean') == 'no') {
-			$FormData->setError('colour');// ... this field will be highlighted as having an error but no message will be logged, the next line will create the message for both fields
-			$FormData->setError('ok', 'If your favourite colour is yellow then you must be OK', false);
-		}
-
-
 		if ($FormData->hasError()) {
 			// there was some errors - handle them here
 
 			// an object listing all error fields with user friendly messages can be obtained as follows
 			$error_obj = $FormData->getErrorList();
 
-			// an HTML ready string of errors (separated with '<br />') can be obtained as follows
+			// an HTML ready list of error messages (separated with '<br />') can be obtained as follows
 			$error_message = $FormData->getErrorList(true);
 
 			// just as an example, prepare the data for a confirmation message
@@ -88,14 +70,21 @@ try {
 			// there were no errors so the information can be processed
 
 			// example of extracting data from the object
-			$data['first-name'] = $FormData->getField('first-name', 'value_clean');
-			$data['surname']    = $FormData->getField('surname', 'value_clean');
-			$data['colour']     = $FormData->getField('colour', 'value_clean');
-			$data['ok']         = $FormData->getField('ok', 'value_clean');
+			$first_name = $FormData->getClean('first-name');
+			$surname    = $FormData->getClean('surname');
+			$colour     = $FormData->getClean('colour');
+			$ok         = $FormData->getClean('ok');
 
-			// just as an example, prepare the data for a confirmation message
-			$form_report  = '<div class="alert alert-success" role="alert"><h4>Form report: Success!</h4><p>First name: '.htmlspecialchars($data['first-name']).'<br />Surname: ';
-			$form_report .= htmlspecialchars($data['surname']).'<br />Colour ID: '.htmlspecialchars($data['colour']).'<br />OK?: '.htmlspecialchars($data['ok']).'</p></div>';
+			// put the data in a confirmation message
+			$form_report  = '<div class="alert alert-success" role="alert">';
+			$form_report .= '<h4>Form report: Success!</h4>';
+			$form_report .= '<p>';
+			$form_report .= 'First name: '.htmlspecialchars($first_name).'<br />';
+			$form_report .= 'Surname: '   .htmlspecialchars($surname).'<br />';
+			$form_report .= 'Colour ID: ' .htmlspecialchars($colour).'<br />';
+			$form_report .= 'OK?: '       .htmlspecialchars($ok);
+			$form_report .= '</p>';
+			$form_report .= '</div>';
 		}
 	}
 }
@@ -121,7 +110,7 @@ catch (Exception $e) {
 <div class="container">
 	<h1>FormData: Complete example</h1>
 	<hr />
-<?php if ($form_report) echo $form_report; ?>
+	<?php if (isset($form_report)) echo $form_report; ?>
 	<form action="#" method="post">
 		<?= $FormData->returnHtml() ?>
 		<hr />
