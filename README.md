@@ -6,7 +6,7 @@
 * Retrieve error messages for individual fields or complete form
 * Output HTML inputs, labels, field groups or entire forms, with bootstrap class included
 
-More examples and docs in the [Wiki](https://github.com/prcd/php-class-FormData/wiki)
+More examples and docs in the [Wiki](https://github.com/prcd/php-class-FormData/wiki).
 
 ### Create some fields
 
