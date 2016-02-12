@@ -320,6 +320,11 @@ class FormData
 		return $this->field[$name][$param];
 	}
 	
+	public function getClean($name)
+	{
+		return $this->getField($name, 'value_clean');
+	}
+	
 	
 	// CHECK DATA
 	
