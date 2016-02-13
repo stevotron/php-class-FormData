@@ -75,3 +75,7 @@ if ($_POST['submit'] == 'submit') {
 	}
 }
 ```
+
+### Lots more functionality
+
+Check out the [Wiki](https://github.com/prcd/php-class-FormData/wiki) for full details.
