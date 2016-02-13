@@ -55,7 +55,7 @@ try {
 		if (!$FormData->hasError('first-name')) {
 			$submitted = $FormData->getClean('first-name');
 			if (strtolower($submitted) == 'paul') {
-				$FormData->setError('first-name', 'Sorry, no-one called Paul is allowed', false);
+				$FormData->setError('first-name', 'cannot be Paul, sorry');// message will be prefixed with field label
 			}
 		}
 
@@ -63,24 +63,18 @@ try {
 		// assign an error to a field without generating a message - for example - create an error if the 'colour' is yellow (ID = 2) but the checkbox is not checked
 		if ($FormData->getClean('colour') == '2' && $FormData->getClean('ok') == 'no') {
 			$FormData->setError('colour');// this field will be highlighted as having an error but no message will be logged, the next line will create the message for both fields
-			$FormData->setError('ok', 'If your favourite colour is yellow then you must be OK', false);
+			$FormData->setError('ok', 'If your favourite colour is yellow then you must be OK', false);// to disable the field label being prefixed, add a 3rd argument 'false'
 		}
 
 
 /* ***************************************************************************************************** */
 
 		if ($FormData->hasError()) {
-			// there was some errors
-
-			// an HTML ready string of errors (separated with '<br />') can be obtained as follows
-			$error_message = $FormData->getErrorList(true);
-
-			// just as an example, prepare the data for a confirmation message
-			$form_report  = '<div class="alert alert-danger" role="alert"><h4>Form report: Errors!</h4><p>'.$error_message.'</p></div>';
+			// there was some errors, prepare the data for an error message
+			$form_report  = '<div class="alert alert-danger" role="alert"><h4>Form report: Errors!</h4><p>'.$FormData->getErrorList(true).'</p></div>';
 		}
 		else {
-			// there were no errors so the information can be processed
-
+			// there were no errors
 			$form_report  = '<div class="alert alert-success" role="alert"><h4>Form report: Success!</h4><p>There was no errors</p></div>';
 		}
 	}
@@ -96,7 +90,7 @@ catch (Exception $e) {
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>FormData: Complete example</title>
+	<title>FormData: Custom errors</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<!--[if lt IE 9]>
 	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -105,9 +99,9 @@ catch (Exception $e) {
 </head>
 <body>
 <div class="container">
-	<h1>FormData: Complete example</h1>
+	<h1>FormData: Custom errors</h1>
 	<hr />
-<?php if ($form_report) echo $form_report; ?>
+	<?php if ($form_report) echo $form_report; ?>
 	<form action="#" method="post">
 		<?= $FormData->returnHtml() ?>
 		<hr />

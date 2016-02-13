@@ -57,7 +57,7 @@ try {
 		if ($FormData->hasError()) {
 			// there was some errors - handle them here
 
-			// an object listing all error fields with user friendly messages can be obtained as follows
+			// an object containing all error fields with user friendly messages can be obtained as follows
 			$error_obj = $FormData->getErrorList();
 
 			// an HTML ready list of error messages (separated with '<br />') can be obtained as follows
@@ -99,7 +99,7 @@ catch (Exception $e) {
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>FormData: Complete example</title>
+	<title>FormData: Basic example</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<!--[if lt IE 9]>
 	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -108,7 +108,7 @@ catch (Exception $e) {
 </head>
 <body>
 <div class="container">
-	<h1>FormData: Complete example</h1>
+	<h1>FormData: Basic example</h1>
 	<hr />
 	<?php if (isset($form_report)) echo $form_report; ?>
 	<form action="#" method="post">

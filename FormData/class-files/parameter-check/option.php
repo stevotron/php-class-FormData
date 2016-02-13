@@ -7,12 +7,12 @@ if (is_array($check)) {
 	$clean = [];
 	foreach ($check as $k => $v) {
 		if (is_array($v)) {
-			$id   = $v[0];
-			$desc = $v[1];
+			$id   = (string) $v[0];
+			$desc = (string) $v[1];
 		}
 		else {
-			$id   = $k;
-			$desc = $v;
+			$id   = (string) $k;
+			$desc = (string) $v;
 		}
 		$clean[] = [$id, $desc];
 	}

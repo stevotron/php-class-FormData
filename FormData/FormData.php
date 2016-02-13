@@ -85,8 +85,24 @@ class FormData
 		
 		return $string;
 	}
-	
-	
+
+
+	private function makeObject($input)
+	{
+		if (is_array($input)) {
+			$obj = new stdClass();
+			foreach ($input as $key => $val) {
+				if (is_array($val)) {
+					$val = $this->makeObject($val);
+				}
+				$obj->$key = $val;
+			}
+			return $obj;
+		}
+		return $input;
+	}
+
+
 	private function setFieldParameterName()
 	{
 		$name = $this->setting_field['name'];
@@ -289,43 +305,66 @@ class FormData
 	
 	
 	// RETRIEVING SAVED DATA
-	
-	
-	public function getField($name = NULL, $param = NULL)
-	{
-		if ($name === NULL) {
-			if (count($this->field) > 0) {
-				foreach ($this->field as $k => $v) {
-					$rtn[$k] = (object) $v;
-				}
-			}
-			
-			return (object) $rtn;
-		}
-		
-		if (! isset($this->field[$name])) {
-			return NULL;
-		}
-		
-		if ($param === NULL) {
-			return (object) $this->field[$name];
-		}
-		
-		$param = $this->cleanString($param);
-		
-		if (! isset($this->field[$name][$param])) {
-			return NULL;
-		}
-		
-		return $this->field[$name][$param];
-	}
-	
+
+
+
 	public function getClean($name)
 	{
 		return $this->getField($name, 'value_clean');
 	}
-	
-	
+
+	public function getOption($name, $option_id)
+	{
+		return $this->getField($name, 'option', $option_id);
+	}
+
+	public function getField($name = NULL, $param = NULL, $option_id = NULL)
+	{
+		// return entire data set
+		if ($name === NULL) {
+			if (count($this->field) > 0) {
+				return $this->makeObject($this->field);
+			}
+			return NULL;
+		}
+
+		// does the field name exist?
+		if (!isset($this->field[$name])) {
+			return NULL;
+		}
+
+		// return specific field data
+		if ($param === NULL) {
+			return $this->makeObject($this->field[$name]);
+		}
+		
+		// does parameter name exist?
+		$param = $this->cleanString($param);
+
+		if (!isset($this->field[$name][$param])) {
+			return NULL;
+		}
+
+		// return parameter data
+		if ($option_id === NULL) {
+			return $this->makeObject($this->field[$name][$param]);
+		}
+
+		// return a select or radio value by ID
+		if ($param != 'option') {
+			throw new Exception ('Option ID submitted when parameter value is not option');
+		}
+
+		foreach ($this->field[$name]['option'] as $option_array) {
+			if ($option_array[0] == $option_id) {
+				return $option_array[1];
+			}
+		}
+
+		return NULL;
+	}
+
+
 	// CHECK DATA
 	
 	
@@ -489,7 +528,7 @@ class FormData
 			}
 
 			if (!$html_ready) {
-				return (object) $error_array;
+				return $this->makeObject($error_array);
 			}
 
 			foreach ($error_array as $v) {
