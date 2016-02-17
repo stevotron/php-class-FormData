@@ -39,12 +39,12 @@ class FormData
 					break;
 
 				case 'option':
-					$file = 'option';
+				case 'step':
+					$file = $parameter;
 					break;
 
 				case 'checkboxvalue':
 				case 'checkboxvaluealt':
-				case 'decimal':
 				case 'id':
 				case 'label':
 				case 'max':
@@ -55,7 +55,6 @@ class FormData
 				case 'placeholder':
 				case 'requiredmessage':
 				case 'rows':
-				case 'step':
 				case 'value':
 					$file = NULL;
 //					$file = $parameter;

@@ -35,12 +35,9 @@ $this->field_data = [
 	],
 	'number' => [
 		'label'           => true,
-		'decimal'         => false,
 		'id'              => false,
 		'max'             => false,
-		'maxlength'       => false,
 		'min'             => false,
-		'minlength'       => false,
 		'placeholder'     => false,
 		'required'        => false,
 		'requiredmessage' => false,

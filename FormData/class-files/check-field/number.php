@@ -3,52 +3,68 @@
 // $name is field name to check
 // $input is submitted data
 
+
 // params
 $required = $this->field[$name]['required'];
 $min      = $this->field[$name]['min'];
 $max      = $this->field[$name]['max'];
 $step     = $this->field[$name]['step'];
-$decimal  = $this->field[$name]['decimal'];
+
 
 // store original input
 $this->field[$name]['value'] = $input;
 
-$input = preg_replace("|\s|",'',$input);
-$input = preg_replace("|\A00+\z|", '0', $input);
 
-$decCheck = explode('.', $input);
-
-if (isset($decCheck[1])) {
-	$input = trim($input, '0');
-}
-else if ($input != '0') {
-	$input = preg_replace("|\A0+|", '', $input);// remove leading 0s
-}
-
-if ($input == '' && $required == '1') {
-	$this->setError($name, 'is required');
-}
-else if (!preg_match("|\A\-?[0-9]*\.?[0-9]*\z|",$input) || $input < $min || $input > $max) {
-	// make error message relevant to number parameters
-	$suf = $decimal > 0 ? (', up to '.$decimal.' decimal place'.($decimal == '1' ? '' : 's')) : '';
-	$this->setError($name, 'must be between '.$min.' and '.$max.$suf);
-}
-else if (strlen($decCheck[1]) > $decimal) {
-	if ($decimal == '0') {
-		$this->setError($name, 'cannot be decimal');
-	}
-	else {
-		$this->setError($name, 'must be no more than '.$decimal.' decimal place'.($decimal == '1' ? '' : 's'));
-	}
-}
-else if ($step != 'any' && fmod($min, $step) == 0 && fmod($input, $step) != 0) {
-	// step was incorrect - minimum value CAN be cleanly divided by step
-	$this->setError($name, 'must be divisible by '.$step);
-}
-else if ($step != 'any' && fmod($min, $step) != 0 && fmod($input - $min, $step) != 0) {
-	// step was incorrect - minimum value CANNOT be cleanly divided by step
-	$this->setError($name, 'must be in steps of '.$step.', starting at '.$min);
+// work out max decimal places
+$a = explode('.', $step);
+if (isset($a[1])) {
+	$max_decimal = strlen($a[1]);
 }
 else {
-	$this->field[$name]['valueclean'] = $input;
+	$max_decimal = 0;
+}
+
+
+// primary clean
+$input = preg_replace("|\s|",'',$input);
+
+
+// initial checks
+if (!preg_match("~\A\-?[0-9]*(\.[0-9]+)?\z~",$input)) {
+	$this->setError($name, 'must be numerical');
+}
+else {
+	// secondary clean
+	$input = (float) $input;
+
+	// count decimal places
+	$a = explode('.', $input);
+	$decimal_places = strlen($a[1]);
+
+	// further checks
+	if ($input == '' && $required == '1') {
+		$this->setError($name, 'is required');
+	}
+	else if ($input < $min || $input > $max) {
+		$this->setError($name, 'must be between '.$min.' and '.$max);
+	}
+	else if ($decimal_places > $max_decimal) {
+		if ($max_decimal == '0') {
+			$this->setError($name, 'cannot be decimal');
+		}
+		else {
+			$this->setError($name, 'must be no more than '.$max_decimal.' decimal place'.($max_decimal == '1' ? '' : 's'));
+		}
+	}
+	else if ($step != 'any' && round(fmod($min, $step),14) == 0 && round(fmod($input, $step),14) != 0) {
+		// step was incorrect - minimum value CAN be cleanly divided by step
+		$this->setError($name, 'must be multiple of '.$step);
+	}
+	else if ($step != 'any' && round(fmod($min, $step),14) != 0 && round(fmod($input - $min, $step),14) != 0) {
+		// step was incorrect - minimum value CANNOT be cleanly divided by step
+		$this->setError($name, 'must be in steps of '.$step.', starting at '.$min);
+	}
+	else {
+		$this->field[$name]['valueclean'] = $input;
+	}
 }
