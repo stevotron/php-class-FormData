@@ -21,10 +21,8 @@ $decCheck = explode('.', $input);
 if (isset($decCheck[1])) {
 	$input = trim($input, '0');
 }
-else {
-	if ($input != '0') {
-		$input = preg_replace("|\A0+|", '', $input);// remove leading 0s
-	}
+else if ($input != '0') {
+	$input = preg_replace("|\A0+|", '', $input);// remove leading 0s
 }
 
 if ($input == '' && $required == '1') {
