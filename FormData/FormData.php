@@ -187,7 +187,7 @@ class FormData
 			}
 			throw new Exception ('Invalid parameters ('.implode(', ', $list).') submitted for field name ('.$this->setting_field_name.')');
 		}
-
+		
 		return true;
 	}
 	
@@ -199,7 +199,7 @@ class FormData
 		}
 		
 		$this->field[$name]['value'] = (string) $value;
-
+		
 		return true;
 	}
 
