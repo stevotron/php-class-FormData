@@ -192,6 +192,18 @@ class FormData
 	}
 	
 	
+	public function setValue($name, $value)
+	{
+		if (!isset($this->field[$name])) {
+			throw new Exception (__METHOD__.' - Cannot set value for field ('.$name.'), does not exist');
+		}
+		
+		$this->field[$name]['value'] = (string) $value;
+
+		return true;
+	}
+
+	
 	// GETTING HTML ELEMENTS
 	
 	
