@@ -42,7 +42,7 @@ else {
 	$decimal_places = strlen($a[1]);
 
 	// further checks
-	if ($input == '' && $required == '1') {
+	if ($input === '' && $required == '1') {
 		$this->setError($name, 'is required');
 	}
 	else if ($input < $min || $input > $max) {
