@@ -559,6 +559,7 @@ class FormData
 	{
 		foreach ($this->field as &$field) {
 			$field['value'] = '';
+			$field['valueclean'] = '';
 		}
 	}
 }
