@@ -550,4 +550,15 @@ class FormData
 
 		return false;
 	}
+	
+	
+	// OTHER METHODS
+	
+	
+	public function clearValues()
+	{
+		foreach ($this->field as &$field) {
+			$field['value'] = '';
+		}
+	}
 }
