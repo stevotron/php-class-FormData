@@ -405,6 +405,9 @@ class FormData
 			throw new Exception(__METHOD__.' - Trying to check a field ('.$name.') that has not been created');
 		}
 		
+		// store original value
+		$this->field[$name]['valueoriginal'] = isset($this->field[$name]['value']) ? $this->field[$name]['value'] : '';
+
 		switch ($this->field[$name]['type']) {
 			case 'checkbox':
 			case 'hidden':
@@ -431,6 +434,21 @@ class FormData
 		require __DIR__.'/class-files/check-field/'.$file.'.php';
 		
 		return $this->hasError($name);
+	}
+		
+	public function hasChanged($field_name)
+	{
+		if (!isset($this->field[$field_name])) {
+			throw new Exception("Field name ($field_name) does not exist");
+		}
+		
+		$original_value = isset($this->field[$field_name]['valueoriginal']) ? $this->field[$field_name]['valueoriginal'] : '';
+		
+		if (isset($this->field[$field_name]['valueclean'])) {
+			return ($this->field[$field_name]['valueclean'] !== $original_value);
+		} else {
+			return null;
+		}
 	}
 	
 	
